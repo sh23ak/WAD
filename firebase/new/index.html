@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Firebase Authentication</title>
+  <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-storage.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+	<script type="text/javascript">
+  const firebaseConfig = {
+    apiKey: "AIzaSyC6RI-GxSzDhLgVwcG41o7zgsuEzHf_DEY",
+    authDomain: "apps-a2a84.firebaseapp.com",
+    projectId: "apps-a2a84",
+    storageBucket: "apps-a2a84.appspot.com",
+    messagingSenderId: "757330244692",
+    appId: "1:757330244692:web:5a12b3e7f8c1e69c8469c1",
+    measurementId: "G-21PGV055HY"
+  };
+			var app = firebase.initializeApp(firebaseConfig);
+			const db = firebase.firestore(app);
+
+			  
+
+			function signup() {
+			    var email = document.getElementById('email').value;
+			    var password = document.getElementById('password').value;
+			    firebase.auth().createUserWithEmailAndPassword(email, password)
+			    .then((userCredential) => {
+			        alert("User registered successfully!!");
+			        console.log('Signed up:', userCredential.user);
+			    })
+			    .catch((error) => {
+			        console.error('Signup error:', error.message);
+			    });
+			}
+
+		
+	</script>
+    <div class="container">
+        <h2 class="title">Firebase Authentication &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Login</h2>
+        <div id="login-form">
+            <div class="inputContainer">
+                <input type="email" id="email" placeholder="Email">
+                <input type="password" id="password" placeholder="Password">
+            </div>
+            <div class="buttonContainer">
+                
+                <div class="btn">
+                <button class="button" id="signup" onclick="signup()">Sign up</button>
+             
+                </div>
+            </div>
+        </div>
+    </div>
+  
+</body>
+</html>

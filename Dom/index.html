@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Add Item On Click - jQuery</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+  <h1>Add Item On Click - jQuery</h1>
+  
+  <ul id="itemList">
+    <li >Item 1</li>
+    <li>Item 2</li>
+    <li>Item 3</li>
+  </ul>
+
+  <button id="addItemButton">Add Item</button>
+
+  <script>
+    $(document).ready(function() {
+      $('#addItemButton').click(function() {
+        var newItem = $('<li>New Item</li>'); // Create a new <li> element
+        $('#itemList').append(newItem); // Append the new item to the <ul> element
+      });
+    });
+  </script>
+  
+</body>
+</html>
