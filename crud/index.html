@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CRUD Example</title>
+</head>
+<body>
+  <h1>CRUD Example</h1>
+
+  <h2>Create Todo</h2>
+  <form id="createTodoForm">
+    <input type="text" id="titleInput" placeholder="Title" required>
+    <button type="submit">Create</button>
+  </form>
+
+  <h2>Todos</h2>
+  <ul id="todoList"></ul>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      const $createTodoForm = $('#createTodoForm');
+      const $titleInput = $('#titleInput');
+      const $todoList = $('#todoList');
+
+      // Function to fetch todos from the server
+      function fetchTodos() {
+        $.get('/api/todos')
+          .done(function(todos) {
+            $todoList.empty();
+            todos.forEach(function(todo) {
+              const $li = $('<li>').text(todo.title);
+              const $updateButton = $('<button>')
+                .text('Update')
+                .data('id', todo._id)
+                .click(updateTodo);
+              const $deleteButton = $('<button>')
+                .text('Delete')
+                .data('id', todo._id)
+                .click(deleteTodo);
+              $li.append($updateButton, $deleteButton);
+              $todoList.append($li);
+            });
+          })
+          .fail(function() {
+            console.error('Failed to fetch todos');
+          });
+      }
+
+      // Function to create a new todo
+      $createTodoForm.on('submit', function(event) {
+        event.preventDefault();
+        const title = $titleInput.val();
+        $.post('/api/todos', { title })
+          .done(function(todo) {
+            $titleInput.val('');
+            fetchTodos();
+          })
+          .fail(function() {
+            console.error('Failed to create todo');
+          });
+      });
+
+      // Function to update a todo
+      function updateTodo() {
+        const id = $(this).data('id');
+        const newTitle = prompt('Enter new title:');
+        if (newTitle) {
+          $.ajax({
+            url: `/api/todos/${id}`,
+            method: 'PUT',
+            data: { title: newTitle },
+            success: function() {
+              fetchTodos();
+            },
+            error: function() {
+              console.error('Failed to update todo');
+            }
+          });
+        }
+      }
+
+      // Function to delete a todo
+      function deleteTodo() {
+        const id = $(this).data('id');
+        if (confirm('Are you sure you want to delete this todo?')) {
+          $.ajax({
+            url: `/api/todos/${id}`,
+            method: 'DELETE',
+            success: function() {
+              fetchTodos();
+            },
+            error: function() {
+              console.error('Failed to delete todo');
+            }
+          });
+        }
+      }
+
+      // Initial fetch of todos
+      fetchTodos();
+    });
+  </script>
+</body>
+</html>
